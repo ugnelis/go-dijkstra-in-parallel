@@ -23,12 +23,20 @@ func main() {
 		v.minDistance = math.MaxFloat32
 	}
 
-	ComputePaths(&v3)
-	fmt.Println(v3.name)
+	ComputePaths(&v0)
+
+	for _, v := range vertices {
+		fmt.Print("Distance to ", v.name, ": ", v.minDistance, "\n")
+		path := GetShortestPathTo(v)
+		fmt.Print("Path: ")
+		for _, p := range path {
+			fmt.Print(p.name)
+		}
+		fmt.Print("\n")
+	}
 }
 
 func ComputePaths(source *Vertex) {
-
 	source.minDistance = 0
 
 	var q prio.Queue
@@ -48,6 +56,23 @@ func ComputePaths(source *Vertex) {
 				q.Push(v)
 			}
 		}
+	}
+}
+
+func GetShortestPathTo(target *Vertex) []*Vertex {
+	path := []*Vertex{}
+
+	for vertex := target; vertex != nil; vertex = vertex.previous {
+		path = append(path, vertex);
+	}
+
+	Reverse(path)
+	return path
+}
+
+func Reverse(a []*Vertex) {
+	for i, j := 0, len(a) - 1; i < j; i, j = i + 1, j - 1 {
+		a[i], a[j] = a[j], a[i]
 	}
 }
 
