@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"math"
+	"code.google.com/p/go-priority-queue/prio"
 )
 
 func main() {
@@ -18,7 +20,34 @@ func main() {
 	vertices := []*Vertex{&v0, &v1, &v2, &v3}
 
 	for _, v := range vertices {
-		fmt.Println(v.name)
+		v.minDistance = math.MaxFloat32
+	}
+
+	ComputePaths(&v3)
+	fmt.Println(v3.name)
+}
+
+func ComputePaths(source *Vertex) {
+
+	source.minDistance = 0
+
+	var q prio.Queue
+	q.Push(&prioVertex{value:source})
+
+	for q.Len() > 0 {
+		u := q.Pop()
+
+		for _, element := range u.(*prioVertex).value.adjacencies {
+			v := &prioVertex{value:element.target}
+			weight := element.weight
+			distanceThroughU := u.(*prioVertex).value.minDistance + weight
+
+			if distanceThroughU < v.value.minDistance {
+				v.value.minDistance = distanceThroughU
+				v.value.previous = u.(*prioVertex).value
+				q.Push(v)
+			}
+		}
 	}
 }
 
@@ -32,4 +61,17 @@ type Vertex struct {
 type Edge struct {
 	target *Vertex
 	weight float64
+}
+
+type prioVertex struct {
+	value *Vertex
+	index int // index in heap
+}
+
+func (x *prioVertex) Less(y prio.Interface) bool {
+	return x.value.name < y.(*prioVertex).value.name
+}
+
+func (x *prioVertex) Index(i int) {
+	x.index = i
 }
