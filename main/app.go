@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"math"
+	"time"
 	"code.google.com/p/go-priority-queue/prio"
 )
 
@@ -34,6 +35,8 @@ func main() {
 		}
 		fmt.Print("\n")
 	}
+
+	time.Sleep(100 * time.Millisecond)
 }
 
 func ComputePaths(source *Vertex) {
@@ -46,15 +49,18 @@ func ComputePaths(source *Vertex) {
 		u := q.Pop()
 
 		for _, element := range u.(*prioVertex).value.adjacencies {
-			v := &prioVertex{value:element.target}
-			weight := element.weight
-			distanceThroughU := u.(*prioVertex).value.minDistance + weight
+			go func(edge *Edge) {
+				v := &prioVertex{value:edge.target}
+				weight := edge.weight
+				distanceThroughU := u.(*prioVertex).value.minDistance + weight
 
-			if distanceThroughU < v.value.minDistance {
-				v.value.minDistance = distanceThroughU
-				v.value.previous = u.(*prioVertex).value
-				q.Push(v)
-			}
+				if distanceThroughU < v.value.minDistance {
+					v.value.minDistance = distanceThroughU
+					v.value.previous = u.(*prioVertex).value
+					q.Push(v)
+				}
+			}(&element)
+			time.Sleep(1 * time.Millisecond)
 		}
 	}
 }
