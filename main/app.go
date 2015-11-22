@@ -18,13 +18,13 @@ func ComputePaths(source *Vertex) {
 			v := &prioVertex{value:element.target}
 			weight := element.weight
 			distanceThroughU := u.(*prioVertex).value.minDistance + weight
-			go func(edge *Edge, distance float64) {
-				if distanceThroughU < v.value.minDistance {
-					v.value.minDistance = distance
-					v.value.previous = u.(*prioVertex).value
-					q.Push(v)
+			go func(val *prioVertex, distance float64) {
+				if distanceThroughU < val.value.minDistance {
+					val.value.minDistance = distance
+					val.value.previous = u.(*prioVertex).value
+					q.Push(val)
 				}
-			}(&element, distanceThroughU)
+			}(v, distanceThroughU)
 			time.Sleep(1 * time.Millisecond)
 		}
 	}
