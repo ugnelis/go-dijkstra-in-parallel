@@ -1,43 +1,9 @@
 package main
 
 import (
-	"fmt"
-	"math"
 	"time"
 	"code.google.com/p/go-priority-queue/prio"
 )
-
-func main() {
-	var v0 Vertex = Vertex{name:"A"}
-	var v1 Vertex = Vertex{name:"B"}
-	var v2 Vertex = Vertex{name:"C"}
-	var v3 Vertex = Vertex{name:"D"}
-
-	v0.adjacencies = []Edge{Edge{&v1, 1}, Edge{&v2, 3}}
-	v1.adjacencies = []Edge{Edge{&v0, 2}, Edge{&v2, 1}}
-	v2.adjacencies = []Edge{Edge{&v3, 1}}
-	v3.adjacencies = []Edge{Edge{&v0, 3}}
-
-	vertices := []*Vertex{&v0, &v1, &v2, &v3}
-
-	for _, v := range vertices {
-		v.minDistance = math.MaxFloat32
-	}
-
-	ComputePaths(&v0)
-
-	for _, v := range vertices {
-		fmt.Print("Distance to ", v.name, ": ", v.minDistance, "\n")
-		path := GetShortestPathTo(v)
-		fmt.Print("Path: ")
-		for _, p := range path {
-			fmt.Print(p.name)
-		}
-		fmt.Print("\n")
-	}
-
-	time.Sleep(100 * time.Millisecond)
-}
 
 func ComputePaths(source *Vertex) {
 	source.minDistance = 0
@@ -49,17 +15,16 @@ func ComputePaths(source *Vertex) {
 		u := q.Pop()
 
 		for _, element := range u.(*prioVertex).value.adjacencies {
-			go func(edge *Edge) {
-				v := &prioVertex{value:edge.target}
-				weight := edge.weight
-				distanceThroughU := u.(*prioVertex).value.minDistance + weight
-
+			v := &prioVertex{value:element.target}
+			weight := element.weight
+			distanceThroughU := u.(*prioVertex).value.minDistance + weight
+			go func(edge *Edge, distance float64) {
 				if distanceThroughU < v.value.minDistance {
-					v.value.minDistance = distanceThroughU
+					v.value.minDistance = distance
 					v.value.previous = u.(*prioVertex).value
 					q.Push(v)
 				}
-			}(&element)
+			}(&element, distanceThroughU)
 			time.Sleep(1 * time.Millisecond)
 		}
 	}
