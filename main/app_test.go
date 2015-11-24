@@ -71,7 +71,7 @@ func Example10Vertices() {
 	vertices := []*Vertex{&v0, &v1, &v2, &v3, &v4, &v5, &v6, &v7, &v8, &v9}
 
 	for _, v := range vertices {
-		v.minDistance = math.MaxFloat32
+		v.minDistance = math.MaxFloat64
 	}
 
 	ComputePaths(&v5)
@@ -107,6 +107,91 @@ func Example10Vertices() {
 	// Path: FGI
 	// Distance to J: 5
 	// Path: FEJ
+}
+
+func Example15Vertices() {
+	var v0 Vertex = Vertex{name:"A"}
+	var v1 Vertex = Vertex{name:"B"}
+	var v2 Vertex = Vertex{name:"C"}
+	var v3 Vertex = Vertex{name:"D"}
+	var v4 Vertex = Vertex{name:"E"}
+	var v5 Vertex = Vertex{name:"F"}
+	var v6 Vertex = Vertex{name:"G"}
+	var v7 Vertex = Vertex{name:"H"}
+	var v8 Vertex = Vertex{name:"I"}
+	var v9 Vertex = Vertex{name:"J"}
+	var v10 Vertex = Vertex{name:"K"}
+	var v11 Vertex = Vertex{name:"L"}
+	var v12 Vertex = Vertex{name:"M"}
+	var v13 Vertex = Vertex{name:"N"}
+	var v14 Vertex = Vertex{name:"O"}
+
+	v0.adjacencies = []Edge{Edge{&v1, 1}}
+	v1.adjacencies = []Edge{Edge{&v0, 3}, Edge{&v2, 2}}
+	v2.adjacencies = []Edge{Edge{&v1, 2}}
+	v3.adjacencies = []Edge{Edge{&v4, 3}}
+	v4.adjacencies = []Edge{Edge{&v5, 3}}
+	v5.adjacencies = []Edge{Edge{&v6, 3}}
+	v6.adjacencies = []Edge{Edge{&v7, 3}}
+	v7.adjacencies = []Edge{Edge{&v8, 3}}
+	v8.adjacencies = []Edge{Edge{&v9, 3}}
+	v9.adjacencies = []Edge{Edge{&v3, 3}}
+	v10.adjacencies = []Edge{Edge{&v11, 3}}
+	v11.adjacencies = []Edge{Edge{&v12, 2}, Edge{&v13, 2}}
+	v12.adjacencies = []Edge{Edge{&v11, 2}, Edge{&v14, 2}}
+	v13.adjacencies = []Edge{Edge{&v11, 2}, Edge{&v14, 2}}
+	v14.adjacencies = []Edge{Edge{&v12, 2}, Edge{&v13, 2}}
+
+	vertices := []*Vertex{&v0, &v1, &v2, &v3, &v4, &v5, &v6,
+		&v7, &v8, &v9, &v10, &v11, &v12, &v13, &v14}
+
+	for _, v := range vertices {
+		v.minDistance = math.MaxFloat64
+	}
+
+	ComputePaths(&v7)
+
+	for _, v := range vertices {
+		fmt.Print("Distance to ", v.name, ": ", v.minDistance, "\n")
+		path := GetShortestPathTo(v)
+		fmt.Print("Path: ")
+		for _, p := range path {
+			fmt.Print(p.name)
+		}
+		fmt.Print("\n")
+	}
+
+	// Output:
+	// Distance to A: 1.7976931348623157e+308
+	// Path: A
+	// Distance to B: 1.7976931348623157e+308
+	// Path: B
+	// Distance to C: 1.7976931348623157e+308
+	// Path: C
+	// Distance to D: 9
+	// Path: HIJD
+	// Distance to E: 12
+	// Path: HIJDE
+	// Distance to F: 15
+	// Path: HIJDEF
+	// Distance to G: 18
+	// Path: HIJDEFG
+	// Distance to H: 0
+	// Path: H
+	// Distance to I: 3
+	// Path: HI
+	// Distance to J: 6
+	// Path: HIJ
+	// Distance to K: 1.7976931348623157e+308
+	// Path: K
+	// Distance to L: 1.7976931348623157e+308
+	// Path: L
+	// Distance to M: 1.7976931348623157e+308
+	// Path: M
+	// Distance to N: 1.7976931348623157e+308
+	// Path: N
+	// Distance to O: 1.7976931348623157e+308
+	// Path: O
 }
 
 func Example26Vertices() {
@@ -164,12 +249,11 @@ func Example26Vertices() {
 	v24.adjacencies = []Edge{Edge{&v13, 2}, Edge{&v23, 3}, Edge{&v25, 1}}
 	v25.adjacencies = []Edge{Edge{&v11, 3}, Edge{&v24, 1}}
 
-	vertices := []*Vertex{
-		&v0, &v1, &v2, &v3, &v4, &v5, &v6, &v7, &v8, &v9, &v10, &v11, &v12,
+	vertices := []*Vertex{&v0, &v1, &v2, &v3, &v4, &v5, &v6, &v7, &v8, &v9, &v10, &v11, &v12,
 		&v13, &v14, &v15, &v16, &v17, &v18, &v19, &v20, &v21, &v22, &v23, &v24, &v25}
 
 	for _, v := range vertices {
-		v.minDistance = math.MaxFloat32
+		v.minDistance = math.MaxFloat64
 	}
 
 	ComputePaths(&v18)
