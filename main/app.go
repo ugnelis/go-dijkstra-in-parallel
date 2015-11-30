@@ -1,7 +1,7 @@
 package main
 
 import (
-	"time"
+	"sync"
 	"code.google.com/p/go-priority-queue/prio"
 )
 
@@ -13,20 +13,23 @@ func ComputePaths(source *Vertex) {
 
 	for q.Len() > 0 {
 		u := q.Pop()
+		var wg sync.WaitGroup
 
 		for _, element := range u.(*prioVertex).value.adjacencies {
 			v := &prioVertex{value:element.target}
 			weight := element.weight
 			distanceThroughU := u.(*prioVertex).value.minDistance + weight
-			go func(val *prioVertex, distance float64) {
-				if distanceThroughU < val.value.minDistance {
-					val.value.minDistance = distance
-					val.value.previous = u.(*prioVertex).value
-					q.Push(val)
+			wg.Add(1)
+			go func() {
+				defer wg.Done()
+				if distanceThroughU < v.value.minDistance {
+					v.value.minDistance = distanceThroughU
+					v.value.previous = u.(*prioVertex).value
+					q.Push(v)
 				}
-			}(v, distanceThroughU)
-			time.Sleep(1 * time.Millisecond)
+			}()
 		}
+		wg.Wait()
 	}
 }
 
