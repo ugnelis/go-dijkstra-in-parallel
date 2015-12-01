@@ -67,8 +67,8 @@ type Edge struct {
 
 // prioVertex implements prio.Interface because of insertion into a priority queue.
 type prioVertex struct {
-	value *Vertex 	// its value
-	index int 		// index in heap
+	value *Vertex	// its value
+	index int		// index in heap
 }
 
 // Less returns whether this element should sort before element x.
