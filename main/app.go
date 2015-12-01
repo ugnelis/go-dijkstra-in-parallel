@@ -3,6 +3,7 @@ package main
 import (
 	"sync"
 	"code.google.com/p/go-priority-queue/prio"
+	"runtime"
 )
 
 // ComputePaths computes the minimum distance from the source to each vertex in the graph.
@@ -11,6 +12,8 @@ func ComputePaths(source *Vertex) {
 
 	var q prio.Queue
 	q.Push(&prioVertex{value:source})
+
+	runtime.GOMAXPROCS(1) // Number of processes are defined
 
 	for q.Len() > 0 {
 		u := q.Pop()
