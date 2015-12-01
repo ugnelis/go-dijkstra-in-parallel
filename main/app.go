@@ -54,21 +54,21 @@ func Reverse(data []*Vertex) {
 }
 
 type Vertex struct {
-	name        string	// name of the vertex
-	adjacencies []Edge	// adjacencies of the vertex
-	minDistance float64	// the shortest distance from the source to this vertex in the graph
-	previous    *Vertex	// the previous vertex on the shortest path
+	name        string  // name of the vertex
+	adjacencies []Edge  // adjacencies of the vertex
+	minDistance float64 // the shortest distance from the source to this vertex in the graph
+	previous    *Vertex // the previous vertex on the shortest path
 }
 
 type Edge struct {
-	target *Vertex	// the vertex it points to
-	weight float64	// its weight
+	target *Vertex // the vertex it points to
+	weight float64 // its weight
 }
 
 // prioVertex implements prio.Interface because of insertion into a priority queue.
 type prioVertex struct {
-	value *Vertex	// its value
-	index int		// index in heap
+	value *Vertex // its value
+	index int     // index in heap
 }
 
 // Less returns whether this element should sort before element x.
