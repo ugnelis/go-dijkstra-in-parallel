@@ -3,7 +3,7 @@ package main
 import (
 	"sync"
 	"runtime"
-	"code.google.com/p/go-priority-queue/prio"
+	"../go-priority-queue/prio"
 )
 
 // ComputePaths computes the minimum distance from the source to each vertex in the graph.
