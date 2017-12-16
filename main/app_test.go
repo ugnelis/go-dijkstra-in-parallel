@@ -1,11 +1,11 @@
 package main
 
 import (
-	"fmt"
 	"math"
+	"testing"
 )
 
-func Example4Vertices() {
+func Test4Vertices(t *testing.T) {
 	var v0 Vertex = Vertex{name:"A"}
 	var v1 Vertex = Vertex{name:"B"}
 	var v2 Vertex = Vertex{name:"C"}
@@ -25,13 +25,9 @@ func Example4Vertices() {
 	ComputePaths(&v0)
 
 	for _, v := range vertices {
-		fmt.Print("Distance to ", v.name, ": ", v.minDistance, "\n")
+		t.Log("Distance to ", v.name, ": ", v.minDistance, "\n")
 		path := GetShortestPathTo(v)
-		fmt.Print("Path: ")
-		for _, p := range path {
-			fmt.Print(p.name)
-		}
-		fmt.Print("\n")
+		t.Log("Path: " + GetPathStr(path))
 	}
 
 	// Output:
@@ -45,7 +41,7 @@ func Example4Vertices() {
 	// Path: ABCD
 }
 
-func Example10Vertices() {
+func Test10Vertices(t *testing.T) {
 	var v0 Vertex = Vertex{name:"A"}
 	var v1 Vertex = Vertex{name:"B"}
 	var v2 Vertex = Vertex{name:"C"}
@@ -77,13 +73,9 @@ func Example10Vertices() {
 	ComputePaths(&v5)
 
 	for _, v := range vertices {
-		fmt.Print("Distance to ", v.name, ": ", v.minDistance, "\n")
+		t.Log("Distance to ", v.name, ": ", v.minDistance, "\n")
 		path := GetShortestPathTo(v)
-		fmt.Print("Path: ")
-		for _, p := range path {
-			fmt.Print(p.name)
-		}
-		fmt.Print("\n")
+		t.Log("Path: " + GetPathStr(path))
 	}
 
 	// Output:
@@ -109,7 +101,7 @@ func Example10Vertices() {
 	// Path: FEJ
 }
 
-func Example15Vertices() {
+func Test15Vertices(t *testing.T) {
 	var v0 Vertex = Vertex{name:"A"}
 	var v1 Vertex = Vertex{name:"B"}
 	var v2 Vertex = Vertex{name:"C"}
@@ -152,13 +144,9 @@ func Example15Vertices() {
 	ComputePaths(&v7)
 
 	for _, v := range vertices {
-		fmt.Print("Distance to ", v.name, ": ", v.minDistance, "\n")
+		t.Log("Distance to ", v.name, ": ", v.minDistance, "\n")
 		path := GetShortestPathTo(v)
-		fmt.Print("Path: ")
-		for _, p := range path {
-			fmt.Print(p.name)
-		}
-		fmt.Print("\n")
+		t.Log("Path: " + GetPathStr(path))
 	}
 
 	// Output:
@@ -194,7 +182,7 @@ func Example15Vertices() {
 	// Path: O
 }
 
-func Example20Vertices() {
+func Test20Vertices(t *testing.T) {
 	var v0 Vertex = Vertex{name:"A"}
 	var v1 Vertex = Vertex{name:"B"}
 	var v2 Vertex = Vertex{name:"C"}
@@ -247,13 +235,9 @@ func Example20Vertices() {
 	ComputePaths(&v13)
 
 	for _, v := range vertices {
-		fmt.Print("Distance to ", v.name, ": ", v.minDistance, "\n")
+		t.Log("Distance to ", v.name, ": ", v.minDistance, "\n")
 		path := GetShortestPathTo(v)
-		fmt.Print("Path: ")
-		for _, p := range path {
-			fmt.Print(p.name)
-		}
-		fmt.Print("\n")
+		t.Log("Path: " + GetPathStr(path))
 	}
 
 	// Output:
@@ -299,7 +283,7 @@ func Example20Vertices() {
 	// Path: NLBAT
 }
 
-func Example26Vertices() {
+func Test26Vertices(t *testing.T) {
 	var v0 Vertex = Vertex{name:"A"}
 	var v1 Vertex = Vertex{name:"B"}
 	var v2 Vertex = Vertex{name:"C"}
@@ -364,13 +348,9 @@ func Example26Vertices() {
 	ComputePaths(&v18)
 
 	for _, v := range vertices {
-		fmt.Print("Distance to ", v.name, ": ", v.minDistance, "\n")
+		t.Log("Distance to ", v.name, ": ", v.minDistance, "\n")
 		path := GetShortestPathTo(v)
-		fmt.Print("Path: ")
-		for _, p := range path {
-			fmt.Print(p.name)
-		}
-		fmt.Print("\n")
+		t.Log("Path: " + GetPathStr(path))
 	}
 
 	// Output:

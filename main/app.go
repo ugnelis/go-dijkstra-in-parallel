@@ -83,3 +83,11 @@ func (x *prioVertex) Less(y prio.Interface) bool {
 func (x *prioVertex) Index(i int) {
 	x.index = i
 }
+
+func GetPathStr(vertexArr []*Vertex) string {
+  path_string := ""
+  for _, p := range vertexArr {
+    path_string += p.name
+  }
+  return path_string
+}
