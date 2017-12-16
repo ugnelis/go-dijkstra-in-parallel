@@ -3,10 +3,29 @@ package main
 import (
 	"sync"
 	"runtime"
-	"code.google.com/p/go-priority-queue/prio"
+	"../go-priority-queue/prio"
 )
 
-// ComputePaths computes the minimum distance from the source to each vertex in the graph.
+type Vertex struct {
+  name        string  // name of the vertex
+  adjacencies []Edge  // adjacencies of the vertex
+  minDistance float64 // the shortest distance from the source to this vertex in the graph
+  previous    *Vertex // the previous vertex on the shortest path
+}
+
+type Edge struct {
+  target *Vertex // the vertex it points to
+  weight float64 // its weight
+}
+
+// prioVertex implements prio.Interface because of insertion into a priority queue.
+type prioVertex struct {
+  value *Vertex // its value
+  index int     // index in heap
+}
+
+// ComputePaths computes the minimum distance from the source
+// to each vertex in the graph.
 func ComputePaths(source *Vertex) {
 	source.minDistance = 0
 
@@ -20,21 +39,25 @@ func ComputePaths(source *Vertex) {
 		var wg sync.WaitGroup
 
 		for _, element := range u.(*prioVertex).value.adjacencies {
-			v := &prioVertex{value:element.target}
-			weight := element.weight
-			distanceThroughU := u.(*prioVertex).value.minDistance + weight
 			wg.Add(1)
-			go func() { // Threads are launched.
-				defer wg.Done()
-				if distanceThroughU < v.value.minDistance {
-					v.value.minDistance = distanceThroughU
-					v.value.previous = u.(*prioVertex).value
-					q.Push(v)
-				}
-			}()
+			go worker(u, element, &wg, &q) // Threads are launched.
 		}
 		wg.Wait()
 	}
+}
+
+func worker(u interface{}, element Edge, wg *sync.WaitGroup, q *prio.Queue) {
+  defer wg.Done()
+
+  v := &prioVertex{value: element.target}
+  weight := element.weight
+  distanceThroughU := u.(*prioVertex).value.minDistance + weight
+
+  if distanceThroughU < v.value.minDistance {
+    v.value.minDistance = distanceThroughU
+    v.value.previous = u.(*prioVertex).value
+    q.Push(v)
+  }
 }
 
 // GetShortestPathTo gets the shortest path to the target vertex.
@@ -56,24 +79,6 @@ func Reverse(data []*Vertex) {
 	}
 }
 
-type Vertex struct {
-	name        string  // name of the vertex
-	adjacencies []Edge  // adjacencies of the vertex
-	minDistance float64 // the shortest distance from the source to this vertex in the graph
-	previous    *Vertex // the previous vertex on the shortest path
-}
-
-type Edge struct {
-	target *Vertex // the vertex it points to
-	weight float64 // its weight
-}
-
-// prioVertex implements prio.Interface because of insertion into a priority queue.
-type prioVertex struct {
-	value *Vertex // its value
-	index int     // index in heap
-}
-
 // Less returns whether this element should sort before element x.
 func (x *prioVertex) Less(y prio.Interface) bool {
 	return x.value.name < y.(*prioVertex).value.name
@@ -82,4 +87,12 @@ func (x *prioVertex) Less(y prio.Interface) bool {
 // Index is called by the priority queue when this element is moved to index i.
 func (x *prioVertex) Index(i int) {
 	x.index = i
+}
+
+func GetPathStr(vertexArr []*Vertex) string {
+  path_string := ""
+  for _, p := range vertexArr {
+    path_string += p.name
+  }
+  return path_string
 }
