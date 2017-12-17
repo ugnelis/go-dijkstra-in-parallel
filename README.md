@@ -13,7 +13,7 @@ $ go test
 
 If you want to run specific test function:
 ```
-$ go test -run Example4Vertices
+$ go test -run Test4Vertices
 ```
 
 Add -v flag to see the results
